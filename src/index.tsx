@@ -1,4 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
+import { ShimmerPlaceholder } from './shimmering-placeholder';
 
 const LINKING_ERROR =
   `The package 'react-native-skia-shimmering' doesn't seem to be linked. Make sure: \n\n` +
@@ -6,7 +7,9 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-const SkiaShimmering = NativeModules.SkiaShimmering  ? NativeModules.SkiaShimmering  : new Proxy(
+const SkiaShimmering = NativeModules.SkiaShimmering
+  ? NativeModules.SkiaShimmering
+  : new Proxy(
       {},
       {
         get() {
@@ -18,3 +21,5 @@ const SkiaShimmering = NativeModules.SkiaShimmering  ? NativeModules.SkiaShimmer
 export function multiply(a: number, b: number): Promise<number> {
   return SkiaShimmering.multiply(a, b);
 }
+
+export { ShimmerPlaceholder };

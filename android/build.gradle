@@ -34,7 +34,14 @@ def getExtOrIntegerDefault(name) {
 }
 
 android {
+  ndkVersion '21.4.7075529'
   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
+
+  externalNativeBuild {
+    cmake {
+        version "3.22.1"
+    }
+}
 
   defaultConfig {
     minSdkVersion getExtOrIntegerDefault('minSdkVersion')
