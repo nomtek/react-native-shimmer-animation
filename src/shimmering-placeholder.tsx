@@ -1,83 +1,139 @@
 import React from 'react';
-import { Canvas, Group, LinearGradient, RoundedRect, useClockValue, useComputedValue, vec } from '@shopify/react-native-skia';
 import { SafeAreaView } from 'react-native';
+import { 
+  Canvas, 
+  Group, 
+  LinearGradient, 
+  RoundedRect, 
+  Easing, 
+  useComputedValue, 
+  useTiming, 
+  vec,
+  LinearGradientProps,
+  Color,
+} from '@shopify/react-native-skia';
+import type { AnimationParams } from '@shopify/react-native-skia/lib/typescript/src/animation/types';
 
-const gradientDirections = {
-  horizontal: {
+type GradientDirection = {
+  start: { x: number, y: number };
+  end: { x: number, y: number };
+};
+
+export const GradientDirections = {
+  Horizontal: {
     topToBottom: {
-      p1: { x: 0, y: 0 },
-      p2: { x: 0, y: 1 },
+      start: { x: 0, y: 0 },
+      end: { x: 0, y: 1 },
     },
     bottomToTop: {
-      p1: { x: 0, y: 1 },
-      p2: { x: 0, y: 0 },
+      start: { x: 0, y: 1 },
+      end: { x: 0, y: 0 },
     },
   },
-  vertical: {
+  Vertical: {
     leftToRight: {
-      p1: { x: 0, y: 0 },
-      p2: { x: 1, y: 0 },
+      start: { x: 0, y: 0 },
+      end: { x: 1, y: 0 },
     },
     rightToLeft: {
-      p1: { x: 1, y: 0 },
-      p2: { x: 0, y: 0 },
+      start: { x: 1, y: 0 },
+      end: { x: 0, y: 0 },
     },
   },
-  diagonal: {
+  Diagonal: {
     fromTopLeft: {
-      p1: { x: 0, y: 0 },
-      p2: { x: 1, y: 1 },
+      start: { x: 0, y: 0 },
+      end: { x: 1, y: 1 },
     },
     fromTopRight: {
-      p1: { x: 1, y: 0 },
-      p2: { x: 0, y: 1 },
+      start: { x: 1, y: 0 },
+      end: { x: 0, y: 1 },
     },
     fromBottomLeft: {
-      p1: { x: 0, y: 1 },
-      p2: { x: 1, y: 0 },
+      start: { x: 0, y: 1 },
+      end: { x: 1, y: 0 },
     },
     fromBottomRight: {
-      p1: { x: 1, y: 1 },
-      p2: { x: 0, y: 0 },
+      start: { x: 1, y: 1 },
+      end: { x: 0, y: 0 },
     },
   },
 };
 
-type AnimatedPlaceholderProps = {
-  size: { width: number, height: number };
-  cornerRadius: number;
-  gradientWidth: number;
-}
 
-const AnimatedPlaceholder: React.FC<AnimatedPlaceholderProps> = ({ 
-  size: rectSize, 
-  cornerRadius, 
-  gradientWidth
+
+type AnimatedPlaceholderProps = {
+  color: Color;
+  size: { width: number, height: number };
+  mode: "once" | "loop" | "reverseOnce" | "reverseLoop";
+  cornerRadius?: number;
+  duration?: number; // in milliseconds
+  gradientWidth?: number;
+  gradientDirection?: GradientDirection;
+  gradientColors?: LinearGradientProps["colors"];
+  easing?: (t: number) => number;
+};
+
+const AnimatedPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
+  color,
+  size: rectSize,
+  mode,
+  cornerRadius = 0, 
+  duration = 1000,
+  gradientWidth = 8,
+  gradientDirection = GradientDirections.Vertical.leftToRight,
+  gradientColors = [color, "#ffffff80", color],
+  easing = Easing.linear,
 }) => {
-  const gradient = {
-    // normalized vector
-    direction: gradientDirections.diagonal.fromTopLeft,
-    width: gradientWidth,
-  };
-  const clock = useClockValue();
-  // Normalize the clock value to a value between 0 and 1
-  const normalized = useComputedValue(
-    () => (clock.current / 1000) % 1.0,
-    [clock]
-  );
+  let modeProps: AnimationParams = {};
+  switch (mode) {
+    case "once":
+      modeProps.loop = false;
+      modeProps.yoyo = false;
+      break;
+    case "loop":
+      modeProps.loop = true;
+      modeProps.yoyo = false;
+      break;
+    case "reverseOnce":
+      modeProps.loop = false;
+      modeProps.yoyo = true;
+      break;
+    case "reverseLoop":
+      modeProps.loop = true;
+      modeProps.yoyo = true;
+      break;
+  }
+  const progress = useTiming({ from: 0, to: 1, ...modeProps }, { duration, easing });
   const start = useComputedValue(
-    () => vec(
-        -gradient.width + normalized.current * (Math.max(rectSize.width, rectSize.height) + gradient.width), 
-        -gradient.width + normalized.current * (Math.max(rectSize.width, rectSize.height) + gradient.width)
-      ),
-    [normalized]
+    () => {
+      const { x: x1, y: y1 } = gradientDirection.start;
+      const { x: x2, y: y2 } = gradientDirection.end;
+      const isConstX = x1 === x2;
+      const isConstY = y1 === y2;
+      const invertProgressX = x2 < x1;
+      const invertProgressY = y2 < y1;
+      return vec(
+        isConstX ? 0 : -gradientWidth + (invertProgressX ? (1-progress.current) : progress.current) * (Math.max(rectSize.width, rectSize.height) + gradientWidth), 
+        isConstY ? 0 : -gradientWidth + (invertProgressY ? (1-progress.current) : progress.current) * (Math.max(rectSize.width, rectSize.height) + gradientWidth)
+      );
+    },
+    [progress]
   );
   const end = useComputedValue(
-    () => vec(
-        normalized.current * (Math.max(rectSize.width, rectSize.height) + gradient.width), 
-        normalized.current * (Math.max(rectSize.width, rectSize.height) + gradient.width)
-      ),
-    [normalized]
+    () => {
+      const { x: x1, y: y1 } = gradientDirection.start;
+      const { x: x2, y: y2 } = gradientDirection.end;
+      const isConstX = x1 === x2;
+      const isConstY = y1 === y2;
+      const invertProgressX = x2 < x1;
+      const invertProgressY = y2 < y1;
+      return vec(
+        isConstX ? 0 : (invertProgressX ? (1-progress.current) : progress.current) * (Math.max(rectSize.width, rectSize.height) + gradientWidth), 
+        isConstY ? 0 : (invertProgressY ? (1-progress.current) : progress.current) * (Math.max(rectSize.width, rectSize.height) + gradientWidth)
+      );
+    },
+    [progress]
   );
   return (
     <Group>
@@ -86,12 +142,12 @@ const AnimatedPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
         x={0}
         y={0}
         r={cornerRadius}
-        color="lightgray"
+        color={color}
       >
         <LinearGradient
           start={start}
           end={end}
-          colors={["lightgray", "#ffffff80", "lightgray"]}
+          colors={gradientColors}
         />
       </RoundedRect>
     </Group>
@@ -103,9 +159,14 @@ const ShimmerPlaceholder = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <Canvas style={{ flex: 1 }}>
         <AnimatedPlaceholder 
-          size={{ width: 256, height: 128 }}
+          color="lightgray"
+          size={{ width: 256, height: 256 }}
+          mode="loop"
           cornerRadius={13}
           gradientWidth={32}
+          gradientDirection={GradientDirections.Vertical.leftToRight}
+          duration={1000}
+          easing={Easing.inOut(Easing.cubic)}
         />
       </Canvas>
     </SafeAreaView>
