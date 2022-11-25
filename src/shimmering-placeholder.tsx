@@ -12,6 +12,7 @@ import {
   Canvas,
 } from '@shopify/react-native-skia';
 import type { AnimationParams } from '@shopify/react-native-skia/lib/typescript/src/animation/types';
+import type { ViewStyle } from 'react-native';
 
 type GradientDirection = {
   start: { x: number; y: number };
@@ -69,6 +70,7 @@ export type AnimatedPlaceholderProps = {
   gradientDirection?: GradientDirection;
   gradientColors?: LinearGradientProps['colors'];
   easing?: (t: number) => number;
+  style?: ViewStyle;
 };
 
 const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
@@ -81,6 +83,7 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
   gradientDirection = GradientDirections.Diagonal.fromTopLeft,
   gradientColors = [color, '#ffffff80', color],
   easing = Easing.linear,
+  style,
 }) => {
   let modeProps: AnimationParams = {};
   switch (mode) {
@@ -144,7 +147,9 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
     );
   }, [progress]);
   return (
-    <Canvas style={{ width: rectSize.width, height: rectSize.height }}>
+    <Canvas
+      style={{ width: rectSize.width, height: rectSize.height, ...style }}
+    >
       <Group>
         <RoundedRect {...rectSize} x={0} y={0} r={borderRadius} color={color}>
           <LinearGradient start={start} end={end} colors={gradientColors} />

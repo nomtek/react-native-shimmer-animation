@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import {
   AnimatedPlaceholderProps,
   ShimmeringPlaceholder,
@@ -7,15 +7,17 @@ import {
 
 type Props = {
   visible: boolean;
+  style?: ViewStyle;
 } & AnimatedPlaceholderProps;
 
 export const ShimmeringWrapper: React.FC<Props> = ({
   children,
   visible,
+  style,
   ...props
 }) => {
   return (
-    <View>
+    <View style={style}>
       {visible && <>{children}</>}
       {!visible && <ShimmeringPlaceholder {...props} />}
     </View>
