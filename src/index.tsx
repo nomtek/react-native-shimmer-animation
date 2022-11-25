@@ -1,5 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
-import { ShimmerPlaceholder } from './shimmering-placeholder';
+import { ShimmeringPlaceholder } from './shimmering-placeholder';
+import { ShimmeringWrapper } from './shimmering-wrapper';
 
 const LINKING_ERROR =
   `The package 'react-native-skia-shimmering' doesn't seem to be linked. Make sure: \n\n` +
@@ -22,4 +23,4 @@ export function multiply(a: number, b: number): Promise<number> {
   return SkiaShimmering.multiply(a, b);
 }
 
-export { ShimmerPlaceholder };
+export { ShimmeringPlaceholder, ShimmeringWrapper };
