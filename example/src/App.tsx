@@ -4,6 +4,7 @@ import { Button, SafeAreaView, StyleSheet, View } from 'react-native';
 import {
   ShimmeringPlaceholder,
   ShimmeringWrapper,
+  GradientDirections,
 } from 'react-native-skia-shimmering';
 
 const styles = StyleSheet.create({
@@ -17,11 +18,11 @@ const styles = StyleSheet.create({
   view: {
     width: 256,
     height: 128,
-    borderRadius: 13,
     backgroundColor: 'red',
   },
   placeholder: {
     marginTop: 16,
+    borderRadius: 16,
   },
 });
 
@@ -33,7 +34,7 @@ export default function App() {
       <ShimmeringWrapper
         visible={viewsVisible}
         size={{ width: 256, height: 128 }}
-        borderRadius={13}
+        shimmerStyle={{ borderRadius: 16 }}
         style={styles.wrapper}
       >
         <View style={styles.view} />
@@ -42,8 +43,8 @@ export default function App() {
 
       <ShimmeringPlaceholder
         size={{ width: 256, height: 128 }}
-        borderRadius={13}
         style={styles.placeholder}
+        gradientDirection={GradientDirections.Diagonal.fromTopLeft}
       />
     </SafeAreaView>
   );

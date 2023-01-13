@@ -8,12 +8,12 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "pods": "pod-install --quiet",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "reset": "rm -rf ios/Pods && rm -rf ~/Library/Developer/Xcode/DerivedData && rm -rf $TMPDIR/react-native-packager-cache-* && rm -rf $TMPDIR/metro-bundler-cache-* && rm -rf $TMPDIR/react-* && rm -rf node_modules/ && npm cache verify && npm install"
   },
   "dependencies": {
     "react": "17.0.2",
     "react-native": "0.68.2",
-    "@shopify/react-native-skia": "^0.1.146",
     "react-native-reanimated": "^2.13.0",
     "react-native-linear-gradient": "^2.6.2"
   },
