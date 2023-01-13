@@ -1,5 +1,8 @@
 import { NativeModules, Platform } from 'react-native';
-import { ShimmeringPlaceholder } from './shimmering-placeholder';
+import {
+  ShimmeringPlaceholder,
+  GradientDirections,
+} from './shimmering-placeholder';
 import { ShimmeringWrapper } from './shimmering-wrapper';
 
 const LINKING_ERROR =
@@ -23,4 +26,4 @@ export function multiply(a: number, b: number): Promise<number> {
   return SkiaShimmering.multiply(a, b);
 }
 
-export { ShimmeringPlaceholder, ShimmeringWrapper };
+export { ShimmeringPlaceholder, ShimmeringWrapper, GradientDirections };

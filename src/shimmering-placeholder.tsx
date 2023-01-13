@@ -1,26 +1,29 @@
-import React, { useEffect } from 'react';
-// import {
-//   Group,
-//   LinearGradient,
-//   RoundedRect,
-//   Easing,
-//   useComputedValue,
-//   useTiming,
-//   vec,
-//   LinearGradientProps,
-//   Color,
-//   Canvas,
-// } from '@shopify/react-native-skia';
+import React, { useEffect, useMemo } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-// import type { AnimationParams } from '@shopify/react-native-skia/lib/typescript/src/animation/types';
-import { Animated, Easing, View, ViewStyle } from 'react-native';
-import {
+import { StyleSheet, ViewStyle, View } from 'react-native';
+import Animated, {
   withTiming,
   useSharedValue,
   useAnimatedStyle,
+  Easing,
+  withRepeat,
+  interpolate,
 } from 'react-native-reanimated';
 
-// const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
+const styles = StyleSheet.create({
+  container: {
+    overflow: 'hidden',
+  },
+  background: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+  },
+  animated: {
+    flex: 1,
+  },
+});
 
 type GradientDirection = {
   start: { x: number; y: number };
@@ -28,24 +31,10 @@ type GradientDirection = {
 };
 
 export const GradientDirections = {
-  Horizontal: {
-    topToBottom: {
-      start: { x: 0, y: 0 },
-      end: { x: 0, y: 1 },
-    },
-    bottomToTop: {
-      start: { x: 0, y: 1 },
-      end: { x: 0, y: 0 },
-    },
-  },
   Vertical: {
     leftToRight: {
       start: { x: 0, y: 0 },
       end: { x: 1, y: 0 },
-    },
-    rightToLeft: {
-      start: { x: 1, y: 0 },
-      end: { x: 0, y: 0 },
     },
   },
   Diagonal: {
@@ -53,135 +42,77 @@ export const GradientDirections = {
       start: { x: 0, y: 0 },
       end: { x: 1, y: 1 },
     },
-    fromTopRight: {
-      start: { x: 1, y: 0 },
-      end: { x: 0, y: 1 },
-    },
     fromBottomLeft: {
       start: { x: 0, y: 1 },
       end: { x: 1, y: 0 },
-    },
-    fromBottomRight: {
-      start: { x: 1, y: 1 },
-      end: { x: 0, y: 0 },
     },
   },
 };
 
 export type AnimatedPlaceholderProps = {
-  color?: '';
   size: { width: number; height: number };
-  mode?: 'once' | 'loop' | 'reverseOnce' | 'reverseLoop';
-  borderRadius?: number;
+  mode?: 'loop' | 'reverseLoop';
   duration?: number; // in milliseconds
   gradientWidth?: number;
   gradientDirection?: GradientDirection;
-  gradientColors?: [];
+  gradientColors?: [string, string, string];
   easing?: (t: number) => number;
   style?: ViewStyle;
+  gradientLocations?: [number, number, number];
 };
 
 const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
-  color = 'grey',
   size: rectSize,
   mode = 'loop',
-  borderRadius = 0,
   duration = 1000,
-  gradientWidth = 40,
+  gradientWidth = rectSize.width,
   gradientDirection = GradientDirections.Diagonal.fromTopLeft,
   gradientColors = ['#ebebeb', '#c5c5c5', '#ebebeb'],
   easing = Easing.linear,
+  gradientLocations = [0.3, 0.5, 0.7],
   style,
 }) => {
-  // let modeProps: AnimationParams = {};
-  // switch (mode) {
-  //   case 'once':
-  //     modeProps.loop = false;
-  //     modeProps.yoyo = false;
-  //     break;
-  //   case 'loop':
-  //     modeProps.loop = true;
-  //     modeProps.yoyo = false;
-  //     break;
-  //   case 'reverseOnce':
-  //     modeProps.loop = false;
-  //     modeProps.yoyo = true;
-  //     break;
-  //   case 'reverseLoop':
-  //     modeProps.loop = true;
-  //     modeProps.yoyo = true;
-  //     break;
-  // }
-  // const progress = withTiming(
-  //   { from: 0, to: 1, ...modeProps },
-  //   { duration, easing }
-  // );
-  // const start = useSharedValue(() => {
-  //   const { x: x1, y: y1 } = gradientDirection.start;
-  //   const { x: x2, y: y2 } = gradientDirection.end;
-  //   const isConstX = x1 === x2;
-  //   const isConstY = y1 === y2;
-  //   const invertProgressX = x2 < x1;
-  //   const invertProgressY = y2 < y1;
-  //   return vec(
-  //     isConstX
-  //       ? 0
-  //       : -gradientWidth +
-  //           (invertProgressX ? 1 - progress.current : progress.current) *
-  //             (Math.max(rectSize.width, rectSize.height) + gradientWidth),
-  //     isConstY
-  //       ? 0
-  //       : -gradientWidth +
-  //           (invertProgressY ? 1 - progress.current : progress.current) *
-  //             (Math.max(rectSize.width, rectSize.height) + gradientWidth)
-  //   );
-  // }, [progress]);
-
-  // const end = useComputedValue(() => {
-  //   const { x: x1, y: y1 } = gradientDirection.start;
-  //   const { x: x2, y: y2 } = gradientDirection.end;
-  //   const isConstX = x1 === x2;
-  //   const isConstY = y1 === y2;
-  //   const invertProgressX = x2 < x1;
-  //   const invertProgressY = y2 < y1;
-  //   return vec(
-  //     isConstX
-  //       ? 0
-  //       : (invertProgressX ? 1 - progress.current : progress.current) *
-  //           (Math.max(rectSize.width, rectSize.height) + gradientWidth),
-  //     isConstY
-  //       ? 0
-  //       : (invertProgressY ? 1 - progress.current : progress.current) *
-  //           (Math.max(rectSize.width, rectSize.height) + gradientWidth)
-  //   );
-  // }, [progress]);
-
   const beginShimmerPosition = useSharedValue(-1);
 
   useEffect(() => {
-    beginShimmerPosition;
-  });
+    beginShimmerPosition.value = withRepeat(
+      withTiming(1, { duration, easing }),
+      -1
+    );
+  }, [beginShimmerPosition, duration, easing]);
+
+  const output = useMemo(
+    () =>
+      mode === 'loop'
+        ? [-rectSize.width, rectSize.width]
+        : [rectSize.width, -rectSize.width],
+    [mode, rectSize]
+  );
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: offset.value * 255 }],
+      transform: [
+        {
+          translateX: interpolate(beginShimmerPosition.value, [-1, 1], output),
+        },
+      ],
     };
   });
 
   return (
-    <Animated.View
-      style={[
-        { width: rectSize.width, height: rectSize.height, ...style },
-        animatedStyles,
-      ]}
-    >
-      <LinearGradient
-        start={gradientDirection.start}
-        end={gradientDirection.end}
-        colors={gradientColors}
-        style={{ flex: 1, width: rectSize.width }}
-      />
-    </Animated.View>
+    <View style={[styles.container, { ...rectSize }, style]}>
+      <View style={[styles.background, { backgroundColor: gradientColors[0] }]}>
+        <Animated.View style={[styles.animated, animatedStyles]}>
+          <LinearGradient
+            start={gradientDirection.start}
+            end={gradientDirection.end}
+            colors={gradientColors}
+            style={[styles.gradient, { width: gradientWidth }]}
+            locations={gradientLocations}
+          />
+        </Animated.View>
+      </View>
+    </View>
   );
 };
 
