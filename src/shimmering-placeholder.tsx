@@ -43,6 +43,7 @@ export type AnimatedPlaceholderProps = {
   easing?: (t: number) => number;
   style?: ViewStyle;
   gradientLocations?: [number, number, number];
+  animated?: number;
 };
 
 const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
@@ -54,6 +55,7 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
   easing = Easing.linear,
   gradientLocations = [0.3, 0.5, 0.7],
   style,
+  animated = withRepeat(withTiming(1, { duration, easing }), -1),
 }) => {
   const beginShimmerPosition = useSharedValue(-1);
 
@@ -63,11 +65,8 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
   );
 
   useEffect(() => {
-    beginShimmerPosition.value = withRepeat(
-      withTiming(1, { duration, easing }),
-      -1
-    );
-  }, [duration, beginShimmerPosition, easing]);
+    beginShimmerPosition.value = animated;
+  }, [beginShimmerPosition, animated]);
 
   const animatedStyles = useAnimatedStyle(() => {
     return {

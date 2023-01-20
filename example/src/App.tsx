@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 
 import { Button, SafeAreaView, StyleSheet, View } from 'react-native';
 import {
+  Easing,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
+import {
   ShimmeringPlaceholder,
   ShimmeringWrapper,
 } from 'react-native-skia-shimmering';
@@ -28,8 +35,32 @@ const styles = StyleSheet.create({
 export default function App() {
   const [viewsVisible, setViewsVisible] = useState(false);
 
+  const one = withRepeat(
+    withSequence(
+      withTiming(1, { duration: 1000, easing: Easing.linear }),
+      withTiming(2, { duration: 700, easing: Easing.linear })
+    ),
+    -1
+  );
+  const two = withRepeat(
+    withDelay(700, withTiming(1, { duration: 1000, easing: Easing.linear })),
+    -1
+  );
+
   return (
     <SafeAreaView style={styles.container}>
+      <View style={{ flexDirection: 'row' }}>
+        <ShimmeringPlaceholder
+          size={{ width: 256, height: 256 }}
+          style={styles.placeholder}
+          animated={one}
+        />
+        <ShimmeringPlaceholder
+          size={{ width: 256, height: 256 }}
+          style={styles.placeholder}
+          animated={two}
+        />
+      </View>
       <ShimmeringWrapper
         visible={viewsVisible}
         size={{ width: 256, height: 256 }}
