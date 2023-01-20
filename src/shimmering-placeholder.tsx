@@ -25,25 +25,10 @@ const styles = StyleSheet.create({
   },
 });
 
-type GradientDirection = {
-  start: { x: number; y: number };
-  end: { x: number; y: number };
-};
-
-export const GradientDirections = {
+const GradientDirections = {
   Vertical: {
     leftToRight: {
       start: { x: 0, y: 0 },
-      end: { x: 1, y: 0 },
-    },
-  },
-  Diagonal: {
-    fromTopLeft: {
-      start: { x: 0, y: 0 },
-      end: { x: 1, y: 1 },
-    },
-    fromBottomLeft: {
-      start: { x: 0, y: 1 },
       end: { x: 1, y: 0 },
     },
   },
@@ -54,7 +39,6 @@ export type AnimatedPlaceholderProps = {
   mode?: 'loop' | 'reverseLoop';
   duration?: number; // in milliseconds
   gradientWidth?: number;
-  gradientDirection?: GradientDirection;
   gradientColors?: [string, string, string];
   easing?: (t: number) => number;
   style?: ViewStyle;
@@ -66,7 +50,6 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
   mode = 'loop',
   duration = 1000,
   gradientWidth = rectSize.width,
-  gradientDirection = GradientDirections.Diagonal.fromTopLeft,
   gradientColors = ['#ebebeb', '#c5c5c5', '#ebebeb'],
   easing = Easing.linear,
   gradientLocations = [0.3, 0.5, 0.7],
@@ -74,30 +57,33 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
 }) => {
   const beginShimmerPosition = useSharedValue(-1);
 
+  const gradientDirection = useMemo(
+    () => GradientDirections.Vertical.leftToRight,
+    []
+  );
+
   useEffect(() => {
     beginShimmerPosition.value = withRepeat(
       withTiming(1, { duration, easing }),
       -1
     );
-  }, [beginShimmerPosition, duration, easing]);
-
-  const output = useMemo(
-    () =>
-      mode === 'loop'
-        ? [-rectSize.width, rectSize.width]
-        : [rectSize.width, -rectSize.width],
-    [mode, rectSize]
-  );
+  }, [duration, beginShimmerPosition, easing]);
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [
         {
-          translateX: interpolate(beginShimmerPosition.value, [-1, 1], output),
+          translateX: interpolate(
+            beginShimmerPosition.value,
+            [-1, 1],
+            mode === 'loop'
+              ? [-rectSize.width, rectSize.width]
+              : [rectSize.width, -rectSize.width]
+          ),
         },
       ],
     };
-  });
+  }, [mode, rectSize]);
 
   return (
     <View style={[styles.container, { ...rectSize }, style]}>

@@ -4,7 +4,6 @@ import { Button, SafeAreaView, StyleSheet, View } from 'react-native';
 import {
   ShimmeringPlaceholder,
   ShimmeringWrapper,
-  GradientDirections,
 } from 'react-native-skia-shimmering';
 
 const styles = StyleSheet.create({
@@ -33,7 +32,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <ShimmeringWrapper
         visible={viewsVisible}
-        size={{ width: 256, height: 128 }}
+        size={{ width: 256, height: 256 }}
         shimmerStyle={{ borderRadius: 16 }}
         style={styles.wrapper}
       >
@@ -42,9 +41,8 @@ export default function App() {
       <Button onPress={() => setViewsVisible(!viewsVisible)} title="TOGGLE" />
 
       <ShimmeringPlaceholder
-        size={{ width: 256, height: 128 }}
+        size={{ width: 256, height: 256 }}
         style={styles.placeholder}
-        gradientDirection={GradientDirections.Diagonal.fromTopLeft}
       />
     </SafeAreaView>
   );
