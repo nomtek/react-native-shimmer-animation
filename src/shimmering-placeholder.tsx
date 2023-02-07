@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
 const GradientDirections = {
   Vertical: {
     leftToRight: {
-      start: { x: 0, y: 0 },
-      end: { x: 1, y: 0 },
+      start: { x: -1, y: 0.5 },
+      end: { x: 2, y: 0.5 },
     },
   },
 };
 
 export type AnimatedPlaceholderProps = {
-  size: { width: number; height: number };
+  size?: { width: number; height: number };
   mode?: 'loop' | 'reverseLoop';
   duration?: number; // in milliseconds
   gradientWidth?: number;
@@ -44,10 +44,12 @@ export type AnimatedPlaceholderProps = {
   style?: ViewStyle;
   gradientLocations?: [number, number, number];
   animated?: number;
+  input?: number[];
+  output?: number[];
 };
 
 const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
-  size: rectSize,
+  size: rectSize = { width: 200, height: 16 },
   mode = 'loop',
   duration = 1000,
   gradientWidth = rectSize.width,
@@ -56,6 +58,8 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
   gradientLocations = [0.3, 0.5, 0.7],
   style,
   animated = withRepeat(withTiming(1, { duration, easing }), -1),
+  input = [-1, 1],
+  output = [-rectSize.width, rectSize.width],
 }) => {
   const beginShimmerPosition = useSharedValue(-1);
 
@@ -68,21 +72,16 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
     beginShimmerPosition.value = animated;
   }, [beginShimmerPosition, animated]);
 
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
+  const animatedStyles = useAnimatedStyle(
+    () => ({
       transform: [
         {
-          translateX: interpolate(
-            beginShimmerPosition.value,
-            [-1, 1],
-            mode === 'loop'
-              ? [-rectSize.width, rectSize.width]
-              : [rectSize.width, -rectSize.width]
-          ),
+          translateX: interpolate(beginShimmerPosition.value, input, output),
         },
       ],
-    };
-  }, [mode, rectSize]);
+    }),
+    [mode, rectSize]
+  );
 
   return (
     <View style={[styles.container, { ...rectSize }, style]}>
