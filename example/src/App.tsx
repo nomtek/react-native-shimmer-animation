@@ -6,7 +6,7 @@ import { ShimmeringPlaceholder } from 'react-native-skia-shimmering';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    marginHorizontal: 16,
     marginTop: 40,
     backgroundColor: 'white',
   },
@@ -43,6 +43,7 @@ export default function App() {
         input={[-1, -0.33, 0.33, 1]}
         output={[-200, 0, 200, 200]}
       />
+      <View style={{ height: 100 }} />
       <View style={{ flexDirection: 'row' }}>
         <ShimmeringPlaceholder
           size={{ width: 124, height: 124 }}

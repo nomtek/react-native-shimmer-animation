@@ -100,4 +100,4 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
   );
 };
 
-export { ShimmeringPlaceholder };
+export { ShimmeringPlaceholder, GradientDirections };
