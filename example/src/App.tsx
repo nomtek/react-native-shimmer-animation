@@ -31,7 +31,10 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}> React Native Reanimated Shimmer </Text>
       <Text style={styles.sessionTitle}>Simple</Text>
-      <ShimmeringPlaceholder style={{ borderRadius: 16 }} />
+      <ShimmeringPlaceholder
+        style={{ borderRadius: 16 }}
+        size={{ width: 200, height: 15 }}
+      />
       <Text style={styles.sessionTitle}>Avatar</Text>
       <ShimmeringPlaceholder
         style={{ borderRadius: 100 }}
@@ -39,6 +42,7 @@ export default function App() {
       />
       <Text style={styles.sessionTitle}>Facebook</Text>
       <ShimmeringPlaceholder
+        size={{ width: 200, height: 15 }}
         style={{ borderRadius: 8, marginBottom: 16, height: 24 }}
         input={[-1, -0.33, 0.33, 1]}
         output={[-200, 0, 200, 200]}
@@ -53,16 +57,19 @@ export default function App() {
         />
         <View style={{ justifyContent: 'space-between' }}>
           <ShimmeringPlaceholder
+            size={{ width: 200, height: 15 }}
             style={{ borderRadius: 8 }}
             input={[-1, -0.33, 0.33, 1]}
             output={[-200, -200, 0, 200]}
           />
           <ShimmeringPlaceholder
+            size={{ width: 200, height: 15 }}
             style={{ borderRadius: 8 }}
             input={[-1, -0.33, 0.33, 1]}
             output={[-200, -200, 0, 200]}
           />
           <ShimmeringPlaceholder
+            size={{ width: 200, height: 15 }}
             style={{ borderRadius: 8 }}
             input={[-1, -0.33, 0.33, 1]}
             output={[-200, -200, 0, 200]}
