@@ -1,50 +1,80 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Button, SafeAreaView, StyleSheet, View } from 'react-native';
-import {
-  ShimmeringPlaceholder,
-  ShimmeringWrapper,
-} from 'react-native-skia-shimmering';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { ShimmeringPlaceholder } from 'react-native-skia-shimmering';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 16,
+    padding: 16,
+    marginTop: 40,
+    backgroundColor: 'white',
   },
-  wrapper: {
-    marginBottom: 16,
+  title: {
+    fontSize: 20,
+    marginBottom: 12,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: 'black',
   },
-  view: {
-    width: 256,
-    height: 128,
-    borderRadius: 13,
-    backgroundColor: 'red',
-  },
-  placeholder: {
-    marginTop: 16,
+  sessionTitle: {
+    fontSize: 16,
+    marginTop: 20,
+    marginBottom: 6,
+    fontWeight: '600',
+    color: 'black',
   },
 });
 
 export default function App() {
-  const [viewsVisible, setViewsVisible] = useState(false);
-
   return (
     <SafeAreaView style={styles.container}>
-      <ShimmeringWrapper
-        visible={viewsVisible}
-        size={{ width: 256, height: 128 }}
-        borderRadius={13}
-        style={styles.wrapper}
-      >
-        <View style={styles.view} />
-      </ShimmeringWrapper>
-      <Button onPress={() => setViewsVisible(!viewsVisible)} title="TOGGLE" />
-
+      <Text style={styles.title}> React Native Reanimated Shimmer </Text>
+      <Text style={styles.sessionTitle}>Simple</Text>
       <ShimmeringPlaceholder
-        size={{ width: 256, height: 128 }}
-        borderRadius={13}
-        style={styles.placeholder}
+        style={{ borderRadius: 16 }}
+        size={{ width: 200, height: 15 }}
       />
+      <Text style={styles.sessionTitle}>Avatar</Text>
+      <ShimmeringPlaceholder
+        style={{ borderRadius: 100 }}
+        size={{ width: 200, height: 200 }}
+      />
+      <Text style={styles.sessionTitle}>Facebook</Text>
+      <ShimmeringPlaceholder
+        size={{ width: 200, height: 15 }}
+        style={{ borderRadius: 8, marginBottom: 16, height: 24 }}
+        input={[-1, -0.33, 0.33, 1]}
+        output={[-200, 0, 200, 200]}
+      />
+      <View style={{ flexDirection: 'row' }}>
+        <ShimmeringPlaceholder
+          size={{ width: 124, height: 124 }}
+          style={{ borderRadius: 64, marginEnd: 16 }}
+          input={[-1, -0.33, 0.33, 1]}
+          output={[-200, 0, 200, 200]}
+        />
+        <View style={{ justifyContent: 'space-between' }}>
+          <ShimmeringPlaceholder
+            size={{ width: 200, height: 15 }}
+            style={{ borderRadius: 8 }}
+            input={[-1, -0.33, 0.33, 1]}
+            output={[-200, -200, 0, 200]}
+          />
+          <ShimmeringPlaceholder
+            size={{ width: 200, height: 15 }}
+            style={{ borderRadius: 8 }}
+            input={[-1, -0.33, 0.33, 1]}
+            output={[-200, -200, 0, 200]}
+          />
+          <ShimmeringPlaceholder
+            size={{ width: 200, height: 15 }}
+            style={{ borderRadius: 8 }}
+            input={[-1, -0.33, 0.33, 1]}
+            output={[-200, -200, 0, 200]}
+          />
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
