@@ -1,4 +1,4 @@
-# react-native-skia-shimmering
+# react-native-shimmer-animation
 Shimmering placeholder for iOS and Android based on Reanimated
 ## Installation
 

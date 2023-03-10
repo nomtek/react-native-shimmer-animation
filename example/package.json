@@ -1,6 +1,6 @@
 {
-  "name": "react-native-skia-shimmering-example",
-  "description": "Example app for react-native-skia-shimmering",
+  "name": "react-native-shimmer-animation-example",
+  "description": "Example app for react-native-shimmer-animation",
   "version": "0.0.1",
   "private": true,
   "scripts": {

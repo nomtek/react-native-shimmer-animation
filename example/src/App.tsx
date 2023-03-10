@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { ShimmeringPlaceholder } from 'react-native-skia-shimmering';
+import { ShimmeringPlaceholder } from 'react-native-shimmer-animation';
 
 const styles = StyleSheet.create({
   container: {
