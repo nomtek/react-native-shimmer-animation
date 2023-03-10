@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View, StyleProp, ViewStyle } from 'react-native';
 import {
   AnimatedPlaceholderProps,
   ShimmeringPlaceholder,
@@ -7,7 +7,7 @@ import {
 
 type Props = {
   visible: boolean;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   shimmerStyle?: ViewStyle;
 } & AnimatedPlaceholderProps;
 

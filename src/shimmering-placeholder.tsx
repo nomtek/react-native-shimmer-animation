@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { StyleSheet, ViewStyle, View } from 'react-native';
+import { StyleSheet, StyleProp, ViewStyle, View } from 'react-native';
 import Animated, {
   withTiming,
   useSharedValue,
@@ -40,7 +40,7 @@ export type AnimatedPlaceholderProps = {
   gradientWidth?: number;
   gradientColors?: [string, string, string];
   easing?: (t: number) => number;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   gradientLocations?: [number, number, number];
   animated?: number;
   input?: number[];
