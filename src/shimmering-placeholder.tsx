@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const GradientDirections = {
+export const GradientDirections = {
   Vertical: {
     leftToRight: {
       start: { x: -1, y: 0.5 },
@@ -35,8 +35,7 @@ const GradientDirections = {
 };
 
 export type AnimatedPlaceholderProps = {
-  size?: { width: number; height: number };
-  mode?: 'loop' | 'reverseLoop';
+  size: { width: number; height: number };
   duration?: number; // in milliseconds
   gradientWidth?: number;
   gradientColors?: [string, string, string];
@@ -49,8 +48,7 @@ export type AnimatedPlaceholderProps = {
 };
 
 const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
-  size: rectSize = { width: 200, height: 16 },
-  mode = 'loop',
+  size: rectSize,
   duration = 1000,
   gradientWidth = rectSize.width,
   gradientColors = ['#ebebeb', '#c5c5c5', '#ebebeb'],
@@ -80,7 +78,7 @@ const ShimmeringPlaceholder: React.FC<AnimatedPlaceholderProps> = ({
         },
       ],
     }),
-    [mode, rectSize]
+    [input, output]
   );
 
   return (
