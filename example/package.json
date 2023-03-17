@@ -1,6 +1,6 @@
 {
-  "name": "react-native-skia-shimmering-example",
-  "description": "Example app for react-native-skia-shimmering",
+  "name": "react-native-shimmer-animation-example",
+  "description": "Example app for react-native-shimmer-animation",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -23,6 +23,7 @@
     "babel-plugin-module-resolver": "^4.1.0",
     "metro-react-native-babel-preset": "^0.67.0",
     "patch-package": "^6.4.7",
+    "pod-install": "^0.1.0",
     "postinstall-postinstall": "^2.1.0"
   }
 }

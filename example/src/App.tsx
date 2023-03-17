@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { ShimmeringPlaceholder } from 'react-native-skia-shimmering';
+import { ShimmeringPlaceholder } from 'react-native-shimmer-animation';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    marginHorizontal: 16,
     marginTop: 40,
     backgroundColor: 'white',
   },
@@ -47,6 +47,7 @@ export default function App() {
         input={[-1, -0.33, 0.33, 1]}
         output={[-200, 0, 200, 200]}
       />
+      <View style={{ height: 100 }} />
       <View style={{ flexDirection: 'row' }}>
         <ShimmeringPlaceholder
           size={{ width: 124, height: 124 }}

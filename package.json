@@ -1,5 +1,5 @@
 {
-  "name": "react-native-skia-shimmering",
+  "name": "react-native-shimmer-animation",
   "version": "0.1.0",
   "description": "test",
   "main": "lib/commonjs/index",
@@ -13,7 +13,7 @@
     "android",
     "ios",
     "cpp",
-    "react-native-skia-shimmering.podspec",
+    "react-native-shimmer-animation.podspec",
     "!lib/typescript/example",
     "!android/build",
     "!ios/build",
@@ -35,13 +35,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/wmatyjanomtek/react-native-skia-shimmering",
+  "repository": "https://github.com/nomtek/react-native-shimmer-animation",
   "author": "Wojciech Matyja <w.matyja@nomtek.com> (https://github.com/wmatyjanomtek)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wmatyjanomtek/react-native-skia-shimmering/issues"
+    "url": "https://github.com/nomtek/react-native-shimmer-animation/issues"
   },
-  "homepage": "https://github.com/wmatyjanomtek/react-native-skia-shimmering#readme",
+  "homepage": "https://github.com/nomtek/react-native-shimmer-animation#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -62,6 +62,8 @@
     "pod-install": "^0.1.0",
     "prettier": "^2.0.5",
     "react-native-builder-bob": "^0.18.3",
+    "react-native-linear-gradient": "^2.6.2",
+    "react-native-reanimated": "^3.0.2",
     "release-it": "^15.0.0",
     "typescript": "^4.5.2"
   },
@@ -69,10 +71,10 @@
     "@types/react": "17.0.21"
   },
   "peerDependencies": {
-    "react-native-reanimated": ">=2.13.0",
-    "react-native-linear-gradient": ">=2.6.2",
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-linear-gradient": ">=2.6.2",
+    "react-native-reanimated": ">=2.13.0"
   },
   "jest": {
     "preset": "react-native",
