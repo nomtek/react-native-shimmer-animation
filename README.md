@@ -51,9 +51,23 @@ const [isLoading, setLoading] = useState(false);
 
 ### Synchronized animation between multiple components
 
-<video width="320" controls>
-  <source src="synchronized-shimmering.mov" type="video/mp4">
-</video>
+https://user-images.githubusercontent.com/35593033/227862302-b28ace3a-ca12-4f67-8293-7a0340d7de18.mov
+
+Use `input` and `output` props to sync the animation between several components
+```jsx
+<ShimmeringPlaceholder
+  size={{ width: 100, height: 100 }}
+  style={{ borderRadius: 8, marginBottom: 16, height: 24 }}
+  input={[-1, 0, 1]}
+  output={[-100, 100, 100]}
+/>
+<ShimmeringPlaceholder
+  ize={{ width: 100, height: 100 }}
+  style={{ borderRadius: 8, marginBottom: 16, height: 24 }}
+  input={[-1, 0, 1]}
+  output={[-100, -100, 100]}
+/>
+```
 
 Check out the [example app](/example/src/App.tsx) for more usage examples.
 
